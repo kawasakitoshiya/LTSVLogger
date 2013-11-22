@@ -2,19 +2,19 @@
 #include <iostream>
 #include <sstream>
 
-LTSVLogger LTSVLogger::set(std::string key, std::string value)
+LTSVLogger &LTSVLogger::set(std::string key, std::string value)
 {
   _string_values[key] = value;
   return *this;
 };
 
-LTSVLogger LTSVLogger::set(std::string key, int value)
+LTSVLogger &LTSVLogger::set(std::string key, int value)
 {
   _int_values[key] = value;
   return *this;
 };
 
-LTSVLogger LTSVLogger::set(std::string key, float value)
+LTSVLogger &LTSVLogger::set(std::string key, float value)
 {
   _float_values[key] = value;
   return *this;

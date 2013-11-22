@@ -7,9 +7,9 @@ class LTSVLogger{
 public:
 
   //return this
-  LTSVLogger set(std::string key, std::string value);
-  LTSVLogger set(std::string key, int value);
-  LTSVLogger set(std::string key, float value);
+  LTSVLogger &set(std::string key, std::string value);
+  LTSVLogger &set(std::string key, int value);
+  LTSVLogger &set(std::string key, float value);
 
   void info();
 
