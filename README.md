@@ -2,7 +2,7 @@
 
 ## Sample
 ```
-#include "ltsv_logger.hpp"
+#include "ltsv_logger.h"
 
 int main(){
   LTSVLogger ltsv_logger;
