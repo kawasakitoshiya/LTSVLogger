@@ -7,6 +7,9 @@
 
 using namespace std;
 int main(){
+  LTSVLogger ltsv_logger_simple;
+  ltsv_logger_simple.debug("very simple message");
+
   LTSVLogger ltsv_logger;
   ltsv_logger.set("status", "in progresss").set("progress", (float)0.5).set("method", __func__);
   ltsv_logger.info();

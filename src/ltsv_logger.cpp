@@ -38,35 +38,39 @@ void LTSVLogger::set_level(std::string level) {
   level_.value = level;
 }
 
-void LTSVLogger::critical() {
+void LTSVLogger::critical(std::string message) {
   set_level("critical");
-  print_log();
+  print_log(message);
 }
 
-void LTSVLogger::error() {
+void LTSVLogger::error(std::string message) {
   set_level("error");
-  print_log();
+  print_log(message);
 }
 
-void LTSVLogger::warning() {
+void LTSVLogger::warning(std::string message) {
   set_level("warning");
-  print_log();
+  print_log(message);
 }
 
-void LTSVLogger::info() {
+void LTSVLogger::info(std::string message) {
   set_level("info");
-  print_log();
+  print_log(message);
 }
 
-void LTSVLogger::debug() {
+void LTSVLogger::debug(std::string message) {
   set_level("debug");
-  print_log();
+  print_log(message);
 }
 
-void LTSVLogger::print_log() {
+void LTSVLogger::print_log(std::string message) {
   std::stringstream ss;
   if (print_time_)  append_time(ss);
   ss << level_.key << ":" << level_.value << "\t";
+  if (message.length() != 0) {
+  ss << "message" << ":" << message << "\t"; 
+  }
+
   append_ltsv(ss);
 
   std::cout << ss.str() << std::endl;

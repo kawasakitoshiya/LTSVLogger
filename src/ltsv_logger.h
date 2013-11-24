@@ -23,11 +23,11 @@ public:
   LTSVLogger &set(std::string key, int value);
   LTSVLogger &set(std::string key, float value);
   // print
-  void critical();
-  void error();
-  void warning();
-  void info();
-  void debug();
+  void critical(std::string message = "");
+  void error(std::string message = "");
+  void warning(std::string message = "");
+  void info(std::string message = "");
+  void debug(std::string message = "");
 private:
   std::vector<KeyValue> kvs_;
   KeyValue level_;
@@ -41,7 +41,7 @@ private:
   void clear();
   void append_time(std::stringstream &ss);
   void append_ltsv(std::stringstream &ss);
-  void print_log();
+  void print_log(std::string message);
 };
 
 #endif
