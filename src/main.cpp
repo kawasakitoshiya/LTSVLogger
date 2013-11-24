@@ -1,10 +1,20 @@
+/*
+ * Copyright 2013 kawasakitoshiya
+*/
+
 #include <iostream>
-#include "ltsv_logger.hpp"
+#include "ltsv_logger.h"
 
 using namespace std;
 int main(){
-  LTSVLogger ltsv;
-  ltsv.set("number_of_lines", 3).set("progress", (float)0.5).set("method", "run");
-  ltsv.info();
+  LTSVLogger ltsv_logger;
+  ltsv_logger.set("status", "in progresss").set("progress", (float)0.5).set("method", __func__);
+  ltsv_logger.info();
 
+  ltsv_logger.set("message", "broken data");
+  ltsv_logger.critical();
+
+  LTSVLogger ltsv_logger_formatted(true,"%Y/%m/%d %H-%M-%S");
+  ltsv_logger_formatted.set("status", "in progresss").set("progress", (float)0.5).set("method", __func__);
+  ltsv_logger_formatted.info();
 }
