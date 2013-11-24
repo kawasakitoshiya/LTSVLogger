@@ -12,49 +12,61 @@ LTSVLogger::LTSVLogger(bool print_time, std::string time_format)
 }
 
 LTSVLogger &LTSVLogger::set(std::string key, std::string value) {
-  string_values_[key] = value;
+  KeyValue kv = {key, value};
+  kvs_.push_back(kv);
   return *this;
 }
 
 LTSVLogger &LTSVLogger::set(std::string key, int value) {
-  int_values_[key] = value;
+  std::stringstream tmp;
+  tmp << value;
+  KeyValue kv = {key, tmp.str()};
+  kvs_.push_back(kv);
   return *this;
 }
 
 LTSVLogger &LTSVLogger::set(std::string key, float value) {
-  float_values_[key] = value;
+  std::stringstream tmp;
+  tmp << value;
+  KeyValue kv = {key, tmp.str()};
+  kvs_.push_back(kv);
   return *this;
 }
 
+void LTSVLogger::set_level(std::string level) {
+  level_.key = "level";
+  level_.value = level;
+}
+
 void LTSVLogger::critical() {
-  set("level", "critical");
+  set_level("critical");
   print_log();
 }
 
 void LTSVLogger::error() {
-  set("level", "error");
+  set_level("error");
   print_log();
 }
 
 void LTSVLogger::warning() {
-  set("level", "warning");
+  set_level("warning");
   print_log();
 }
 
 void LTSVLogger::info() {
-  set("level", "info");
+  set_level("info");
   print_log();
 }
 
 void LTSVLogger::debug() {
-  set("level", "debug");
+  set_level("debug");
   print_log();
 }
-
 
 void LTSVLogger::print_log() {
   std::stringstream ss;
   if (print_time_)  append_time(ss);
+  ss << level_.key << ":" << level_.value << "\t";
   append_ltsv(ss);
 
   std::cout << ss.str() << std::endl;
@@ -63,16 +75,13 @@ void LTSVLogger::print_log() {
 }
 
 void LTSVLogger::clear() {
-  string_values_.clear();
-  int_values_.clear();
-  float_values_.clear();
+  kvs_.clear();
 }
 
 void LTSVLogger::append_time(std::stringstream &ss) {
   time_t t;
   struct tm tm;
   char str[81];
-
   time(&t);
 
   localtime_r(&t, &tm);
@@ -81,21 +90,9 @@ void LTSVLogger::append_time(std::stringstream &ss) {
 }
 
 void LTSVLogger::append_ltsv(std::stringstream &ss) {
-  std::map<std::string, std::string>::iterator it_str = string_values_.begin();
-  while ( it_str != string_values_.end() ) {
-      ss << (*it_str).first << ":" << (*it_str).second << "\t";
-      ++it_str;
-    }
-
-  std::map<std::string, int>::iterator it_int = int_values_.begin();
-  while ( it_int != int_values_.end() ) {
-      ss << (*it_int).first << ":" << (*it_int).second << "\t";
-      ++it_int;
-    }
-
-  std::map<std::string, float>::iterator it_float = float_values_.begin();
-  while ( it_float != float_values_.end() ) {
-      ss << (*it_float).first << ":" << (*it_float).second << "\t";
-      ++it_float;
-    }
+  std::vector<KeyValue>::iterator it;
+  int len = kvs_.size();
+  for (int i = 0; i < len; i++) {
+    ss << kvs_[i].key << ":" << kvs_[i].value << "\t";
+  }
 }
