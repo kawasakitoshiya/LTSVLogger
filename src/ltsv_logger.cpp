@@ -11,6 +11,10 @@ LTSVLogger::LTSVLogger(bool print_time, std::string time_format)
   : print_time_(print_time), time_format_(time_format) {
 }
 
+void LTSVLogger::set_level(const int valid_level) {
+  valid_level_ = valid_level;
+}
+
 LTSVLogger &LTSVLogger::set(std::string key, std::string value) {
   KeyValue kv = {key, value};
   kvs_.push_back(kv);
@@ -33,33 +37,53 @@ LTSVLogger &LTSVLogger::set(std::string key, float value) {
   return *this;
 }
 
-void LTSVLogger::set_level(std::string level) {
+void LTSVLogger::add_level(std::string level) {
   level_.key = "level";
   level_.value = level;
 }
 
 void LTSVLogger::critical(std::string message) {
-  set_level("critical");
+  add_level("critical");
+  if (valid_level_ > CRITICAL) {
+    clear();
+    return;
+  }
   print_log(message);
 }
 
 void LTSVLogger::error(std::string message) {
-  set_level("error");
+  add_level("error");
+  if (valid_level_ > ERROR) {
+    clear();
+    return;
+  }
   print_log(message);
 }
 
 void LTSVLogger::warning(std::string message) {
-  set_level("warning");
+  add_level("warning");
+  if (valid_level_ > WARNING) {
+    clear();
+    return;
+  }
   print_log(message);
 }
 
 void LTSVLogger::info(std::string message) {
-  set_level("info");
+  add_level("info");
+  if (valid_level_ > INFO) {
+    clear();
+    return;
+  }
   print_log(message);
 }
 
 void LTSVLogger::debug(std::string message) {
-  set_level("debug");
+  add_level("debug");
+  if (valid_level_ > DEBUG) {
+    clear();
+    return;
+  }
   print_log(message);
 }
 
